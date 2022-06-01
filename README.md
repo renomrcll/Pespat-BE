@@ -1,4 +1,36 @@
 # pespat-BE
+
+# ENDPOINTS
+## User /api/users/
+POST /login
+POST /register
+PATCH /:id
+GET /:id
+
+## Reservation /api/places/
+POST /
+GET /
+PATCH /:id
+GET /:id
+DELETE /:id
+
+## Reservation /api/reservations/
+POST /
+GET /
+PATCH /:id
+GET /:id
+DELETE /:id
+
+## Reservation /api/payments/
+POST /
+GET /
+PATCH /:id
+GET /:id
+DELETE /:id
+
+
+# run local 
+
 .env file
 #express config
 
