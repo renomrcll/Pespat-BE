@@ -3,7 +3,6 @@ const firestore = firebase.firestore();
 const {placesCollectionRef} = require('../database/firebase-collection');
 
 const createPlace = async (req, res) => {
-    
     const name = req.body.name;
     const address = req.body.address;
     const details = req.body.details;
@@ -14,6 +13,9 @@ const createPlace = async (req, res) => {
 
 
     try {
+        if(!name || !address || !details || !contact || !price || !photo || !quota) {
+            throw new Error('Cant create place without name, address, details, contact, price, photo or quota');
+        }
         const place = await placesCollectionRef.add({ name, address, details, contact, price, photo,quota });
         res.status(200).json({ message: 'Place created successfully', place_id: place.id });
     } catch(error) {
@@ -24,22 +26,13 @@ const createPlace = async (req, res) => {
 const updatePlace = async (req, res) => {
 
     const id = req.params.id;
-    const name = req.body.name;
-    const address = req.body.address;
-    const details = req.body.details;
-    const contact = req.body.contact;
-    const price = req.body.price;
-    const photo = req.body.photo;
-    const quota = req.body.quota;
-    // create json object
-    // const place = {
-    //     "name":"perpustakaan",
-    //     "address":"Jl. Kebon Jeruk",
-    //     "details":"Perpustakaan ini berada di kawasan kota",
-    //     "contact":"0812341234",
-    //     "price":"Rp. 100.000",
-    //     "photo":"https://firebasestorage.googleapis.com/v0/b/travel-app-f9f0d.appspot.com/o/places%2Fperpustakaan.jpg?alt=media&token=f9f8f8c0-f8c0-4f0e-b8e0-f8c0f8c0f8c0"
-    // }
+    let name = req.body.name;
+    let address = req.body.address;
+    let details = req.body.details;
+    let contact = req.body.contact;
+    let price = req.body.price;
+    let photo = req.body.photo;
+    let quota = req.body.quota;
     
     try {
         if (!id) {
@@ -47,13 +40,12 @@ const updatePlace = async (req, res) => {
         }
         
         const docRef = placesCollectionRef.doc(id);
-
-        let originalData = await docRef.get();
+        const originalData_temp = await docRef.get();
+        const originalData = originalData_temp.data();
 
         if (!originalData) {
-            throw new Error('No existing plan to delete');
+            throw new Error('No existing plan to update');
         } else {
-            originalData = originalData.data();
             name = name ? name : originalData.name;
             address = address ? address : originalData.address;
             details = details ? details : originalData.details;
@@ -63,8 +55,8 @@ const updatePlace = async (req, res) => {
             quota = quota ? quota : originalData.quota;
         }
 
-        const place = await docRef.update({ name, address, details, contact, price, photo,quota });
-        res.status(200).json({ message: 'Place updated successfully', place_id: place.id });
+        await docRef.update({ name, address, details, contact, price, photo,quota });
+        res.status(200).json({ message: 'Place updated successfully', place_id: id });
     } catch(error) {
         res.status(409).json({ error: error.message });
     }

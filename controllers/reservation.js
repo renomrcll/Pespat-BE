@@ -36,7 +36,7 @@ const updateReservation = async (req, res) => {
             reservation_time = reservation_time ? reservation_time : originalData.reservation_time;
             status = status ? status : originalData.status;
             
-        const reservation = await docRef.update({ user_id, place_id, reservation_time, status });
+        await docRef.update({ user_id, place_id, reservation_time, status });
         res.status(200).json({ message: 'Reservation updated successfully', reservation_id: id });
     } catch(error) {
         res.status(409).json({ error: error.message });
