@@ -1,5 +1,3 @@
-const firebase = require('../database/db');
-const firestore = firebase.firestore();
 const {placesCollectionRef} = require('../database/firebase-collection');
 
 const createPlace = async (req, res) => {
