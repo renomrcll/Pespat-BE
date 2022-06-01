@@ -1,33 +1,90 @@
 # pespat-BE
 
 # ENDPOINTS
-## User /api/users/
-POST /login
-POST /register
-PATCH /:id
-GET /:id
+## User 
+POST 
+```js
+/api/users/login
+```
+POST 
+```js
+/api/users/register
+```
+PATCH 
+```js
+/api/users/:id
+```
+GET 
+```js
+/api/users/:id
+```
+
 
 ## Reservation /api/places/
-POST /
-GET /
-PATCH /:id
-GET /:id
-DELETE /:id
+POST 
+```js
+/api/users/
+```
+GET 
+```js
+/api/users/
+```
+PATCH 
+```js
+/api/users/:id
+```
+GET 
+```js
+/api/users/:id
+```
+DELETE 
+```js
+/api/users/:id
+```
 
 ## Reservation /api/reservations/
-POST /
-GET /
-PATCH /:id
-GET /:id
-DELETE /:id
+POST 
+```js
+/api/users/
+```
+GET 
+```js
+/api/users/
+```
+PATCH 
+```js
+/api/users/:id
+```
+GET 
+```js
+/api/users/:id
+```
+DELETE 
+```js
+/api/users/:id
+```
 
 ## Reservation /api/payments/
-POST /
-GET /
-PATCH /:id
-GET /:id
-DELETE /:id
-
+POST 
+```js
+/api/users/
+```
+GET 
+```js
+/api/users/
+```
+PATCH 
+```js
+/api/users/:id
+```
+GET 
+```js
+/api/users/:id
+```
+DELETE 
+```js
+/api/users/:id
+```
 
 # run local 
 
