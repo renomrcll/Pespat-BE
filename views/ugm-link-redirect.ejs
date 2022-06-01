@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>[pespat] UGM Link</title>
+  </head>
+  <body>
+    <div id="message">Linking your pespat account, please don't close this tab.</div>
+    <script>
+      const messageEl = document.getElementById('message');
+
+      async function exchangeAuthToken() {
+        const response = await fetch("/api/ugm-link/exchange-auth-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            bearerToken: window.sessionStorage.getItem("token"),
+            authToken: window.location.search.split("=")[1]
+          })
+        });
+
+        if (response.status === 200) {
+          messageEl.innerText = "Account linking successful. Please return back to the app."
+          window.sessionStorage.removeItem("token")
+        } else {
+          messageEl.innerText = "Account linking failed. Please try again."
+        }
+      }
+
+      exchangeAuthToken()
+    </script>
+  </body>
+</html>
