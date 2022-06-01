@@ -20,70 +20,70 @@ GET
 ```
 
 
-## Reservation /api/places/
+## Place
 POST 
 ```js
-/api/users/
+/api/places/
 ```
 GET 
 ```js
-/api/users/
+/api/places/
 ```
 PATCH 
 ```js
-/api/users/:id
+/api/places/:id
 ```
 GET 
 ```js
-/api/users/:id
+/api/places/:id
 ```
 DELETE 
 ```js
-/api/users/:id
+/api/places/:id
 ```
 
-## Reservation /api/reservations/
+## Reservation
 POST 
 ```js
-/api/users/
+/api/reservations/
 ```
 GET 
 ```js
-/api/users/
+/api/reservations/
 ```
 PATCH 
 ```js
-/api/users/:id
+/api/reservations/:id
 ```
 GET 
 ```js
-/api/users/:id
+/api/reservations/:id
 ```
 DELETE 
 ```js
-/api/users/:id
+/api/reservations/:id
 ```
 
-## Reservation /api/payments/
+## Payment 
 POST 
 ```js
-/api/users/
+/api/payments/
 ```
 GET 
 ```js
-/api/users/
+/api/payments/
 ```
 PATCH 
 ```js
-/api/users/:id
+/api/payments/:id
 ```
 GET 
 ```js
-/api/users/:id
+/api/payments/:id
 ```
 DELETE 
 ```js
-/api/users/:id
+/api/payments/:id
 ```
 
 # run local 
