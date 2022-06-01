@@ -14,6 +14,10 @@ PATCH
 ```js
 /api/users/:id
 ```
+PATCH
+```js
+/api/users//changepassword/:id
+```
 GET 
 ```js
 /api/users/:id
