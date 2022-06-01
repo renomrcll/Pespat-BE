@@ -4,7 +4,6 @@ const {placesCollectionRef} = require('../database/firebase-collection');
 const {reservationsCollectionRef} = require('../database/firebase-collection');
 
 const createReservation = async (req, res) => {
-    const id = req.params.id;
     const user_id = req.body.user_id;
     const place_id = req.body.place_id;
     const reservation_time = req.body.reservation_time;
@@ -12,11 +11,10 @@ const createReservation = async (req, res) => {
 
 
     try {
-        if (!id || !user_id || !place_id || !reservation_time) {
-            throw new Error('Cant create reservation without id, user_id, place_id or reservation_time');
+        if (!user_id || !place_id || !reservation_time || !status) {
+            throw new Error('Cant create reservation without id, user_id, place_id, reservation_time, or status');
         }
-        const docRef = reservationsCollectionRef.doc(id);
-        const reservation = await docRef.set({ user_id, place_id, reservation_time, status });
+        const reservation = await reservationsCollectionRef.add({ user_id, place_id, reservation_time, status });
         res.status(200).json({ message: 'Reservation created successfully', reservation_id: reservation.id });
     } catch(error) {
         res.status(409).json({ error: error.message });
@@ -25,26 +23,21 @@ const createReservation = async (req, res) => {
 
 const updateReservation = async (req, res) => {
     const id = req.params.id;
-    const user_id = req.body.user_id;
-    const place_id = req.body.place_id;
-    const reservation_time = req.body.reservation_time;
-    const status = req.body.status;
+    let user_id = req.body.user_id;
+    let place_id = req.body.place_id;
+    let reservation_time = req.body.reservation_time;
+    let status = req.body.status;
     const docRef = reservationsCollectionRef.doc(id);
-    let originalData = await docRef.get();
-
+    const originalData_temp = await docRef.get();
+    const originalData = originalData_temp.data();
     try {
-
-        if (!id) {
-            throw new Error('Cant update reservation without id');
-        } else {
-            originalData = originalData.data();
             user_id = user_id ? user_id : originalData.user_id;
             place_id = place_id ? place_id : originalData.place_id;
             reservation_time = reservation_time ? reservation_time : originalData.reservation_time;
             status = status ? status : originalData.status;
-        }
+            
         const reservation = await docRef.update({ user_id, place_id, reservation_time, status });
-        res.status(200).json({ message: 'Reservation updated successfully', reservation_id: reservation.id });
+        res.status(200).json({ message: 'Reservation updated successfully', reservation_id: id });
     } catch(error) {
         res.status(409).json({ error: error.message });
     }
