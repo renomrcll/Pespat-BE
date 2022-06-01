@@ -1,30 +1,17 @@
-const firebase = require('../database/db');
-const firestore = firebase.firestore();
-const {reservationsCollectionRef} = require('../database/firebase-collection');
 const {paymentsCollectionRef} = require('../database/firebase-collection');
 
 const createPayment = async (req, res) => {
-    const id = req.params.id;
     const user_id = req.body.user_id;
     const reservation_id = req.body.reservation_id;
     const payment_method = req.body.payment_method;
     const payment_status = req.body.payment_status;
     const payment_amount = req.body.payment_amount;
-    const docRef = paymentsCollectionRef.doc(id);
-    let originalData = await docRef.get();
 
     try {
-        if (!id || !user_id || !reservation_id || !payment_method || !payment_status || !payment_amount) {
+        if (!user_id || !reservation_id || !payment_method || !payment_status || !payment_amount) {
             throw new Error('Cant create payment without id, user_id, reservation_id, payment_method, payment_status, payment_amount');
-        } else {
-            originalData = originalData.data();
-            user_id = user_id ? user_id : originalData.user_id;
-            reservation_id = reservation_id ? reservation_id : originalData.reservation_id;
-            payment_method = payment_method ? payment_method : originalData.payment_method;
-            payment_status = payment_status ? payment_status : originalData.payment_status;
-            payment_amount = payment_amount ? payment_amount : originalData.payment_amount;
-        }
-        const payment = await docRef.update({ user_id, reservation_id, payment_method, payment_status, payment_amount });
+        } 
+        const payment = await paymentsCollectionRef.add({ user_id, reservation_id, payment_method, payment_status, payment_amount });
         res.status(200).json({ message: 'Payment created successfully', payment_id: payment.id });
     } catch(error) {
         res.status(409).json({ error: error.message });
@@ -33,27 +20,28 @@ const createPayment = async (req, res) => {
 
 const updatePayment = async (req, res) => {
     const id = req.params.id;
-    const user_id = req.body.user_id;
-    const reservation_id = req.body.reservation_id;
-    const payment_method = req.body.payment_method;
-    const payment_status = req.body.payment_status;
-    const payment_amount = req.body.payment_amount;
+    let user_id = req.body.user_id;
+    let reservation_id = req.body.reservation_id;
+    let payment_method = req.body.payment_method;
+    let payment_status = req.body.payment_status;
+    let payment_amount = req.body.payment_amount;
     const docRef = paymentsCollectionRef.doc(id);
-    let originalData = await docRef.get();
+    const originalData_temp = await docRef.get();
+    const originalData = originalData_temp.data();
 
     try {
 
         if (!id) {
             throw new Error('Cant update payment without id');
         } else {
-            originalData = originalData.data();
             user_id = user_id ? user_id : originalData.user_id;
             reservation_id = reservation_id ? reservation_id : originalData.reservation_id;
             payment_method = payment_method ? payment_method : originalData.payment_method;
             payment_status = payment_status ? payment_status : originalData.payment_status;
             payment_amount = payment_amount ? payment_amount : originalData.payment_amount;
         }
-        const payment = await docRef.update({ user_id, reservation_id, payment_method, payment_status, payment_amount });
+        await docRef.update({ user_id, reservation_id, payment_method, payment_status, payment_amount });
+        res.status(200).json({ message: 'Payment updated successfully', payment_id: id });
     } catch(error) {
         res.status(409).json({ error: error.message });
     }
