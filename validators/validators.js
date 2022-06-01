@@ -58,3 +58,42 @@ module.exports.registerValidator=(data) => {
         isValid: isEmpty(errors)
     } 
 }
+
+module.exports.forgotPasswordValidator=(data) => {
+    let errors = {};
+    data.email = !isEmpty(data.email) ? data.email : '';
+
+    if(validator.isEmpty(data.email)){
+        errors.email = 'Email field is required';
+    } else if(!validator.isEmail(data.email)){
+        errors.email = 'Email is invalid';
+    }
+
+    return {
+        errors,
+        isValid: isEmpty(errors)
+    } 
+}
+
+module.exports.confirmPasswordValidator=(data) => {
+    let errors = {};
+    data.password = !isEmpty(data.password) ? data.password : '';
+    data.confirmPassword = !isEmpty(data.confirmPassword) ? data.confirmPassword : '';
+
+    if(validator.isEmpty(data.password)){
+        errors.password = 'Password field is required';
+    } else if(!validator.isLength(data.password, { min: 6 })){
+        errors.password = 'Password must be at least 6 characters';
+    }
+    if(validator.isEmpty(data.confirmPassword)){
+        errors.confirmPassword = 'Confirm Password field is required';
+    } else if(!validator.equals(data.password, data.confirmPassword)){
+        errors.confirmPassword = 'Passwords must match';
+    }
+
+    return {
+        errors,
+        isValid: isEmpty(errors)
+    } 
+}
+
