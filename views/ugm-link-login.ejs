@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>[Pespat] UGM Link</title>
+  </head>
+  <body>
+    <script>
+      window.handlePespatLogin = (async function (event) {
+        event.preventDefault();
+        const { email: { value: email }, password: { value: password } } = event.target;
+
+        const response = await fetch("/api/users/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        if (response.status === 200) {
+          const { token } = await response.json();
+          window.sessionStorage.setItem("token", token);
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          window.location.href = "https://ugm-auth.vercel.app/login?clientId=<%= clientId %>"
+        }
+      })
+    </script>
+    <h1>Pespat - UGM Link</h1>
+    <div>Login to your pespat account</div>
+    <form method="post" name="login-form" onsubmit="window.handlePespatLogin(event);">
+      <label>email
+        <input type="text" name="email" placeholder="Email" />
+      </label>
+      <label>password
+        <input type="password" name="password" placeholder="Password" />
+      </label>
+      <input type="submit" value="Login" />
+    </form>
+  </body>
+</html>
